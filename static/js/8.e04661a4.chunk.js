@@ -1,0 +1,2 @@
+(this.webpackJsonpds_course_recommender=this.webpackJsonpds_course_recommender||[]).push([[8],{939:function(e,t,n){"use strict";n.r(t),n.d(t,"default",(function(){return a}));var r=n(81),c=n(82),u=n(91),s=n(90),i=n(12),o=n(0),a=(n(121),function(e){Object(u.a)(n,e);var t=Object(s.a)(n);function n(){return Object(r.a)(this,n),t.apply(this,arguments)}return Object(c.a)(n,[{key:"render",value:function(){return Object(i.jsx)("div",{children:"Setting"})}}]),n}(o.Component))}}]);
+//# sourceMappingURL=8.e04661a4.chunk.js.map
