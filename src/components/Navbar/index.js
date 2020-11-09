@@ -30,7 +30,7 @@ class SideNav extends Component {
 
         </Header>
         <Layout>
-          {/* <Sider breakpoint="lg" collapsedWidth="0" style={{zIndex: 100, height: "100vh"}} >
+          <Sider breakpoint="lg" collapsedWidth="0" style={{zIndex: 100, height: "100vh"}} >
             <Menu 
               onClick={this.menuClicked}
               mode="inline"
@@ -47,7 +47,7 @@ class SideNav extends Component {
                 )
               })}
             </Menu>
-          </Sider> */}
+          </Sider>
           <Layout className='content-layout' style={{ padding: "24px"}}>
             <Content
               className="site-layout-background"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Button, Table, Typography, Popover, Row, Col, Input, Space } from 'antd'
 import echarts from 'echarts'
-import { getIndeedJobs } from '../../requests'
+import { getIndeedJobs, readFromCSV } from '../../requests'
 import { Chart } from '../../components'
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';

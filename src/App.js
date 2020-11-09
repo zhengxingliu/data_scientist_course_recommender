@@ -24,6 +24,8 @@ function App() {
             )
           })
         }
+        {/* redirect to dashboard */}
+        <Redirect to={routes[1].pathname} from='/' exact />
       </Switch>
     </Navbar>
   )
