@@ -3,18 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@loadable/component": "^5.14.1",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
     "@testing-library/user-event": "^12.2.0",
+    "antd": "^4.8.0",
+    "axios": "^0.21.0",
+    "echarts": "^4.9.0",
+    "p-min-delay": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-highlight-words": "^0.16.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -34,5 +41,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.13.1",
+    "customize-cra": "^1.0.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2",
+    "react-app-rewired": "^2.1.6"
   }
 }
