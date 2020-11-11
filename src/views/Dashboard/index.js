@@ -297,7 +297,9 @@ export default class Dashboard extends Component {
     topSkills.forEach(skill => {
       skill = skill[0].toLowerCase()
       var courses = data.filter((course) => 
-        course.name.toLowerCase().includes(skill) //&& course.difficulty.toLowerCase().includes('intermediate')
+        course.name.toLowerCase().includes(skill) 
+        //&& course.difficulty.toLowerCase().includes('intermediate')
+        // || course.name.toLowerCase().includes(skill) 
       )
       courses = courses.sort((a, b) => a.reviews - b.reviews)
       console.log(courses)
