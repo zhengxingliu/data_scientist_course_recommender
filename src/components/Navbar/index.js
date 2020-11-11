@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Link, withRouter } from "react-router-dom"
-import { Layout, Menu, Dropdown, Avatar, Badge, Typography } from "antd"
+import { Layout, Menu, Dropdown, Avatar, Badge, Typography,  } from "antd"
+import { DownOutlined } from '@ant-design/icons'
 
 
 
@@ -13,6 +14,25 @@ const { Header, Content, Sider } = Layout
 const { Text } = Typography;
 @withRouter
 class SideNav extends Component {
+  renderMenu = () => (
+      <Menu onClick={this.onDropMenuClick}>
+        <Menu.Item key='/menu'>
+          <Badge dot={this.props.notificationCount}>
+            Menu
+          </Badge>
+        </Menu.Item>
+        <Menu.Item key='/Dashboard'>
+          Dashboard
+        </Menu.Item>
+        <Menu.Item key='/setting'>
+          Setting
+        </Menu.Item>
+    </Menu>
+  )
+  onDropMenuClick = ({key}) => {
+    this.props.history.push(key)
+  }
+ 
  
   render() {
      
@@ -28,9 +48,18 @@ class SideNav extends Component {
           <div>
           </div>
 
+          <Dropdown overlay={this.renderMenu()}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <Badge count={this.props.notificationCount} >
+              </Badge>
+                <span style={{padding: '0 4px 0 4px'}}>Hello, {this.props.displayName}</span>
+              <DownOutlined />    
+            </div>
+          </Dropdown>
+
         </Header>
         <Layout>
-          <Sider breakpoint="lg" collapsedWidth="0" style={{zIndex: 100, height: "100vh"}} >
+          {/* <Sider breakpoint="lg" collapsedWidth="0" style={{zIndex: 100, height: "100vh"}} >
             <Menu 
               onClick={this.menuClicked}
               mode="inline"
@@ -47,7 +76,7 @@ class SideNav extends Component {
                 )
               })}
             </Menu>
-          </Sider>
+          </Sider> */}
           <Layout className='content-layout' style={{ padding: "24px"}}>
             <Content
               className="site-layout-background"
@@ -57,7 +86,7 @@ class SideNav extends Component {
               }}
             >
 
-              <div className="content" style={{height: '100%'}}>
+              <div className="content" >
                 {this.props.children} 
               </div>
          

@@ -1,117 +1,14 @@
 import React, { Component } from 'react'
-import { Card, Button, Table, Typography, Popover, Row, Col, Input, Space } from 'antd'
-import echarts from 'echarts'
-import { getIndeedJobs, readFromCSV } from '../../requests'
-import { Chart } from '../../components'
+import { Card, Button, Table, Row, Col, Input, Space, Tooltip } from 'antd'
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import echarts from 'echarts'
+
+import './index.css';
+import { getIndeedJobs, getCourseraCourses } from '../../requests'
+import {chartOption, gridSpan, skills} from './settings'
 
 const { Search } = Input
-
-const option = {
-  dataset: {
-      source: [
-      ]
-  },
-  grid: {
-    left: '3%',
-    right: '3%',
-    top: '0%',
-    bottom: '0%',
-    containLabel: true
-},
-  xAxis: {type: 'value'},
-  yAxis: {type: 'category'},
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-        type: 'shadow'}
-  },
-  
-  series: [
-      {
-          type: 'bar',
-          encode: {
-              x: 'count',
-              y: 'skill'
-          },
-          itemStyle: {
-              color: new echarts.graphic.LinearGradient(
-                  0, 1, 1, 1,
-                  [
-                    {offset: 0, color: '#B3E5FC'},
-                    {offset: 1, color: '#82B1FF'}
-                  ]
-              )
-          },
-          emphasis: {
-              itemStyle: {
-                  color: new echarts.graphic.LinearGradient(
-                      0, 0, 1, 1,
-                      [
-                          {offset: 0, color: '#2378f7'},
-                          {offset: 0.7, color: '#2378f7'},
-                          {offset: 1, color: '#83bff6'}
-                      ]
-                  )
-              }
-          },
-      }
-  ]
-};
-
-
-
-
-
-const skills = {
-  'Python': ['python', 'programming', 'scripting'],
-  'R': ['R' ], 
-  'Java': ['Java', 'JVM'],
-  'Scala': ['Scala'],
-  'C/C++': ['C++'],  
-  'MATLAB': ['MATLAB'],
-  'Excel': ['Excel'],
-  'SAS': ['SAS'],
-  'SQL/databases': ['SQL', 'databases', 'database', 'noSQL'],
-  'Oracle':['Oracle'],
-  'SPSS': ['SPSS'],
-  'Machine Learning': ['Machine Learning', 'ML'],
-  'Data Mining/Analytics': ['Data Mining', 'DM', 'Analytics'],
-  'NLP': ['Natural Language Processing', 'NLP'],
-  'Data Visualization': ['Visualisation', 'Visualization'],
-  'Tableau': ['Tableau'], 
-  'Power BI': ['Power BI'],
-  'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive',
-                'beam', 'Hadoop', 'MapReduce', 'Hbase',
-                'Coudera', 'Hortonworks', 'ETL'],
-  'cloud': ['cloud', 'AWS', 'GCP', 'Azure'],
-  'AWS': ['AWS', 'Amazon Web Services'],
-  'Azure': ['Azure'],
-  'Google Cloud': ['Google Cloud', 'GCP'],
-  'Probability': ['probablity'],
-  'regression': ['regression'],
-  'clustering': ['clustering'],
-  'Sklearn': ['Sklearn', 'ScikitLearn', 'Scikit-Learn'],
-  'numpy': ['numpy'],
-  'pandas': ['pandas'],
-  'Neural Networks': ['Neural Networks', 'Deep Learning', ],
-  'Tensorflow': 'Tensorflow',
-  'Pytorch': 'Pytorch',
-  'Keras': 'Keras',
-  'Computer Vision': ['computer vision'],
-  'Hadoop': ['Hadoop'],
-  'Spark': ['Spark'],
-  'ETL': ['ETL'],
-  'Mathematics': ['Mathematics'],
-  'Algebra': ['Algebra'],
-  'Statistics' :  ['Statistics', 'statistical'],
-  'DevOps': ['DevOps', 'TDD', 'test-driven'],
-  'QA': ['QA', 'testing'],
-  'version control':['GitHub', 'Git', 'version control', 'CI/CD'],
-  'agile' : ['agile'],
-  'SDLC' : ['SDLC', 'sdlc', ]
-}
 
 export default class Dashboard extends Component {
   constructor() {
@@ -191,7 +88,7 @@ export default class Dashboard extends Component {
     this.setState({ searchText: '' });
   };
 
-  getTableColumns = () => {
+  getIndeedTableColumns = () => {
     return [
       {
         title: 'Title',
@@ -217,7 +114,6 @@ export default class Dashboard extends Component {
         key: 'location',
         width: '15%',
         ...this.getColumnSearchProps('location'),
-      
       },
       {
         title: 'Description',
@@ -230,19 +126,16 @@ export default class Dashboard extends Component {
           showTitle: false,
         },
         render: description => (
-          <Popover placement="topLeft"  title={description.split('\n').map(item => <li key={Math.random()}>{item}</li>)}>
+          <Tooltip placement="left" color={'#fff'} title={description.split('\n').map(item => <li key={Math.random()}>{item}</li>)} >
             {description}
-          </Popover>
-         
+          </Tooltip>
         ),
       },
       
     ]
-
   }
   
-  
-  getData = () => {
+  getIndeedData = () => {
     this.setState({isLoading: true})
     getIndeedJobs()
       .then(res => {
@@ -254,13 +147,13 @@ export default class Dashboard extends Component {
         
         this.countSkills(skills, res.map(item => item.description))
         this.setState({
-          data: res.map(item => {
+          indeedData: res.map(item => {
             return {
               ...item,
               key: Math.random()
             }
           }),
-          columns: this.getTableColumns()
+          indeedColumns: this.getIndeedTableColumns()
         })
       })
       .then(() => {
@@ -279,7 +172,7 @@ export default class Dashboard extends Component {
     this.setState({
       searchword: value
     })
-    this.getData()
+    this.getIndeedData()
   };
 
   filterData = (keyword, data) => {
@@ -292,11 +185,9 @@ export default class Dashboard extends Component {
       })
     }
   }
-
  
   countSkills = (skills, data) => {
     var counts = {}
-    var found = 0
     data.forEach(item => {
       // loop through each keyword in skill object 
       for (const [key, value] of Object.entries(skills)) {
@@ -306,47 +197,133 @@ export default class Dashboard extends Component {
             counts[key] = counts[key] ? counts[key] + 1 : 1;
             break
           }
-
-        
         }
       }
     })
+    // sort skill counts
+    var sortedCount = []
+    for (const [key, value] of Object.entries(counts)) {
+      sortedCount.push([key, value])
+    }
+    sortedCount =sortedCount.sort((a, b) => a[1] - b[1])
+
     this.setState({
-      skillCount: counts
+      skillCount: sortedCount
     })
-    return counts
+    return sortedCount
   }
 
   drawSkillChart = () => {
-
-    // format data as echart input 
-    var chartData = []
-    for (const [key, value] of Object.entries(this.state.skillCount)) {
-      chartData.push([key, value])
-    }
-    chartData =chartData.sort((a, b) => a[1] - b[1])
-   
+    var chartData = this.state.skillCount
+    // display top 20 skills 
     chartData = chartData.slice(chartData.length-20,chartData.length)
     chartData.unshift(['skill', 'count'])
-    console.log(chartData)
     this.ChartOption = {
-      ...option,
+      ...chartOption,
       dataset: {source: chartData}
     }
     this.chart.setOption(this.ChartOption)
+    this.getCourseraData()
   }
+
+  getCourseraData = () => {
+    this.setState({isLoading: true})
+    getCourseraCourses()
+      .then(res => {
+        // prevent setState on unmounted component
+        if (!this.updater.isMounted(this)) return 
+        res = JSON.parse(res)
+        const courses = this.matchSkills(res)
+        console.log(courses)
+        this.setState({
+          courseraData: courses.map(item => {
+            return {
+              ...item,
+              key: Math.random()
+            }}),
+          courseraColumns: this.getCourseraTableColumns()
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      .finally(() => {
+        if (!this.updater.isMounted(this)) return 
+        this.setState({isLoading: false})
+      })
+
+  }
+
+  getCourseraTableColumns = () => {
+    return [
+      {
+        dataIndex: 'photo',
+        key: 'photo',
+        render: (text, record) => (
+          <img width='100'src={record.photo}></img>
+        )
+      },
+      {
+        title: 'Course',
+        dataIndex: 'name',
+        key: 'course',
+        render: (text, record) => (
+          <a href={record.link}>{text}</a>
+        )
+      },
+      {
+        title: 'Offer By',
+        dataIndex: 'offerBy',
+        key: 'offerBy',
+      },
+      {
+        title: 'Difficulty',
+        dataIndex: 'difficulty',
+        key: 'difficulty',
+      }, 
+      {
+        title: 'Matched SKill',
+        dataIndex: 'matchedSkill',
+        key: 'matchedSkill',
+      }, 
+    ]
+  }
+
+  matchSkills = (data) => {
+    const skills = this.state.skillCount
+    const topSkills = skills.slice(skills.length-20,skills.length)
+    const result = []
+    // find best matched courses to topSkills
+    topSkills.forEach(skill => {
+      skill = skill[0].toLowerCase()
+      var courses = data.filter((course) => 
+        course.name.toLowerCase().includes(skill) //&& course.difficulty.toLowerCase().includes('intermediate')
+      )
+      courses = courses.sort((a, b) => a.reviews - b.reviews)
+      console.log(courses)
+      // filter duplicated courses
+      for (var i = 0; i < courses.length; i++) {
+        if (courses[i] && !result.includes(courses[i])) {
+          result.push({...courses[i], matchedSkill: skill})
+          break
+        }
+      }
+    })
+    return result.reverse()
+    // return result.sort((a, b) => b.reviews - a.reviews)
+  }
+
 
   componentDidMount() {
     this.chart = echarts.init(document.getElementById('chart'))
-    this.getData()
-
+    this.getIndeedData()
   }
 
   render() {
     return (
       <div>
-        <Row gutter={16}>
-        <Col span={12}>
+        <Row type="flex" gutter={16}>
+        <Col className="gutter-row" {...gridSpan}>
           <Card bordered={false} title='Indeed Data Scientist Postings' >
             <Search
               placeholder="Filter by keywords"
@@ -357,31 +334,41 @@ export default class Dashboard extends Component {
             />
           </Card>
           
-          <Card 
-          
-          bordered={false} 
-          >
+          <Card bordered={false} >
           <Table 
             loading={this.state.isLoading}
-            columns={this.state.columns} 
-            dataSource={this.state.data} 
-            size='small'
+            columns={this.state.indeedColumns} 
+            dataSource={this.state.indeedData} 
+            // size='small'
+            // scroll={{ y: 400 }}
             pagination={{
+              pageSize: 20,
               onChange: this.onPageChange,
               hideOnSinglePage: true,
-              total: this.state.total,
+              // total: this.state.total,
               showQuickJumper: true,
-              showSizeChanger: true
+              showSizeChanger: false
             }}
           />
         </Card> 
 
         </Col>
-        <Col span={12}>
+        <Col className="gutter-row" {...gridSpan} >
             <Card title="Most Desired Skills from Indeed" bordered={false} >
             <div id='chart' style={{height: '400px', width: '100%', margin: '0', padding: 0}}></div>
             </Card>
-  
+
+
+            <Card title="Coursera Course Recommendation" bordered={false} style={{marginTop: '16px'}}>
+              <Table 
+              loading={this.state.isLoading}
+              columns={this.state.courseraColumns} 
+              dataSource={this.state.courseraData} 
+              size='small'
+              // scroll={{ y: 400 }}
+              pagination={false}
+            />
+            </Card>
         </Col>
       </Row>
 

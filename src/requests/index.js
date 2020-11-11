@@ -25,37 +25,8 @@ export const getIndeedJobs = () => {
   return request.post('/fetch-indeed')
 }
 
+export const getCourseraCourses = () => {
+  return request.post('/fetch-coursera')
+}
 
-// export const getArticleList = (offset=0, limited=10) => {
-//   return request.post('/api/v1/articlelist', 
-//   {
-//     //body params
-//     offset,
-//     limited,
-//   })
-// }
 
-// export const deleteArticle = (id) => {
-//   return request.delete(`/api/v1/article/${id}`)
-// }
-
-// export const getArticleById = (id) => {
-//   return request.post(`/api/v1/article/:${id}`)
-// }
-
-// export const saveEditArticle = (id, data) => {
-//   return request.put(`/api/v1/article/:${id}`, data)
-
-// }
-
-// export const getSiteVisitStatistics = () => {
-//   return request.post('/api/v1/statistics/visits')
-// }
-
-// export const getNotifications = () => {
-//   return request.post('/api/v1/notifications')
-// }
-
-// export const loginRequest = (userInfo) => {
-//   return request1.post('/api/v1/login', userInfo)
-// }
