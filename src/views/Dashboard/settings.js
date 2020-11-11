@@ -61,7 +61,7 @@ export const chartOption = {
 
 export const skills = {
   'Python': ['python', 'programming', 'scripting'],
-  'R': [' R ' ], 
+  ' R ': [' R ' ], 
   'Java': ['Java', 'JVM'],
   'Scala': ['Scala'],
   'C/C++': ['C++'],  
@@ -69,10 +69,10 @@ export const skills = {
   'Excel': ['Excel'],
   'SAS': ['SAS'],
   'SQL': ['SQL'],
-  // 'databases': ['databases', 'database'],
   'Oracle':['Oracle'],
   'SPSS': ['SPSS'],
   'Machine Learning': ['Machine Learning', 'ML', 'Deep Learning','Neural Network', 'Neural Networks', 'Artificial Intelligence', 'AI'],
+  'Data Science': ['Data Science'],
   'Data Mining': ['Data Mining'],
   'NLP': ['Natural Language Processing', 'NLP'],
   'Data Visualization': ['Visualization'],
@@ -80,7 +80,7 @@ export const skills = {
   'Power BI': ['Power BI'],
   'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive','beam', 'Hadoop', 'MapReduce', 'Hbase',
                 'Coudera', 'Hortonworks', 'ETL'],
-  'cloud': ['cloud', 'AWS', 'GCP', 'Azure'],
+  'cloud': ['cloud', 'AWS', 'GCP', 'Azure', 'cloud computing'],
   'AWS': ['AWS', 'Amazon Web Services'],
   'Azure': ['Azure'],
   'Google Cloud': ['Google Cloud', 'GCP'],
@@ -102,6 +102,8 @@ export const skills = {
   'agile' : ['agile'],
   'SDLC' : ['SDLC', 'sdlc', ]
 }
+
+export const learningCurve = ['python', 'data science', 'statistics', 'machine learning', 'sql', 'cloud', 'aws', 'google cloud', 'big data', 'excel', 'tableau', 'tensorflow']
 
 
 export const categories = {

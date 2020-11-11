@@ -6,7 +6,7 @@ import echarts from 'echarts'
 
 import './index.css';
 import { getIndeedJobs, getCourseraCourses } from '../../requests'
-import {chartOption, gridSpan, skills} from './settings'
+import {chartOption, gridSpan, skills,learningCurve} from './settings'
 
 const { Search } = Input
 
@@ -292,7 +292,7 @@ export default class Dashboard extends Component {
   matchSkills = (data) => {
     const skills = this.state.skillCount
     const topSkills = skills.slice(skills.length-20,skills.length)
-    const result = []
+    var result = []
     // find best matched courses to topSkills
     topSkills.forEach(skill => {
       skill = skill[0].toLowerCase()
@@ -301,18 +301,21 @@ export default class Dashboard extends Component {
         //&& course.difficulty.toLowerCase().includes('intermediate')
         // || course.name.toLowerCase().includes(skill) 
       )
-      courses = courses.sort((a, b) => a.reviews - b.reviews)
-      console.log(courses)
       // filter duplicated courses
       for (var i = 0; i < courses.length; i++) {
-        if (courses[i] && !result.includes(courses[i])) {
+        if (courses[i] && !result.some(course => course.name === courses[i].name)) {
           result.push({...courses[i], matchedSkill: skill})
           break
         }
       }
     })
-    return result.reverse()
-    // return result.sort((a, b) => b.reviews - a.reviews)
+    result = result.reverse()
+  //   // sort courses on learning curve
+  //   result = result.sort(function(a,b) {
+  //     return learningCurve.indexOf( a.matchedSkill ) - learningCurve.indexOf( b.matchedSkill );
+  // });
+    return result
+    
   }
 
 
