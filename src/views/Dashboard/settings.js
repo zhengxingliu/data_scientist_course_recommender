@@ -96,7 +96,7 @@ export const skills = {
   'Hadoop': ['Hadoop'],
   'Spark': ['Spark'],
   'ETL': ['ETL'],
-  // 'Statistics' :  ['Statistic', 'statistical'],
+  'Statistics' :  ['Statistic', 'statistical'],
   'DevOps': ['DevOps', 'automation', 'QA'],
   'Git':['GitHub', 'Git', 'version control', 'CI/CD'],
   'agile' : ['agile'],
