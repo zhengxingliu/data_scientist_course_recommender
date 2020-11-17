@@ -386,15 +386,15 @@ export default class Dashboard extends Component {
 
 
             <Card title="Coursera Course Recommendation" 
-              extra={
-                <div>
-                  <span>order by: </span>
-                  <Radio.Group value={this.state.courseSortMethod} onChange={this.handleCourseSortMethod}>
-                    <Radio.Button value="skill_demand">skill demand</Radio.Button>
-                    <Radio.Button value="learning_curve">learning curve</Radio.Button>
-                  </Radio.Group>
-                </div>
-              } 
+              // extra={
+              //   <div>
+              //     <span>order by: </span>
+              //     <Radio.Group value={this.state.courseSortMethod} onChange={this.handleCourseSortMethod}>
+              //       <Radio.Button value="skill_demand">skill demand</Radio.Button>
+              //       <Radio.Button value="learning_curve">learning curve</Radio.Button>
+              //     </Radio.Group>
+              //   </div>
+              // } 
               bordered={false} style={{marginTop: '16px'}}>
               <Table 
               loading={this.state.isLoading}
