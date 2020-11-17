@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/views/Dashboard/index.css"],"names":[],"mappings":"AAAA,mBACE,qBAAsB,CACtB,UAAW,CACX,aACF","file":"6.44d139b9.chunk.css","sourcesContent":[".ant-tooltip-inner {\n  background-color: #fff;\n  width: 30vw;\n  color: #272727;\n}\n\n"]}
