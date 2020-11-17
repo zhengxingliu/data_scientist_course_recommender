@@ -16,7 +16,6 @@ request.interceptors.response.use((resp) => {
     return resp.data
   } else {
     // handle error globally 
-    // message.error(resp.data.errMsg);
     message.error('An error occurred.')
   }
 })

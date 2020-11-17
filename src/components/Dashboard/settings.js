@@ -101,15 +101,3 @@ export const skills = {
   'SDLC' : ['SDLC', 'sdlc', ]
 }
 
-export const learningCurve = ['python', 'data science', 'statistics', 'machine learning', 'sql','big data', 'cloud', 'aws', 'gcp', 'excel', 'tableau', 'tensorflow']
-
-export const categories = {
-  'Programming Languages': ['Python', 'R', 'Java', 'C/C++', 'MATLAB', 'Scala'],
-  'Databases': ['SQL', 'Oracle'],
-  'Machine Learning': ['Machine Learning', 'NLP', 'regression', 'clustering', 'Sklearn', 'numpy', 'pandas'],
-  'Deep Learning': ['Tensorflow', 'Pytorch', 'Keras', 'Computer Vision'],
-  'Big Data': ['Big Data'],
-  'Data Analytics & Visualization': ['Data Visualization', 'Tableau', 'Power BI', 'Data Mining/Analytics', 'Excel'],
-  'Cloud': ['cloud', 'AWS', 'Azure', 'GCP'],
-  'Others': ['Algebra', 'Mathematics','Statistics', 'DevOps', 'QA', 'version control', 'agile', 'SDLC','SAS', 'SPSS', 'Probability']
-}

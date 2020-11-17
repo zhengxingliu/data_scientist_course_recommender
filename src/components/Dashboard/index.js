@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Card, Button, Table, Row, Col, Input, Space, Tooltip, Radio} from 'antd'
+import { Card, Button, Table, Row, Col, Input, Space, Tooltip} from 'antd'
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import echarts from 'echarts'
 
 import './index.css';
 import { getIndeedJobs, getCourseraCourses } from '../../requests'
-import {chartOption, gridSpan, skills,learningCurve} from './settings'
+import {chartOption, gridSpan, skills} from './settings'
 
 const { Search } = Input
 
@@ -19,9 +19,7 @@ export default class Dashboard extends Component {
       isLoading: false,
       searchword: '',
       searchText: '',
-      searchedColumn: '',
-      courseSortMethod: 'skill_demand'
-
+      searchedColumn: ''
     }
   }
 
@@ -30,6 +28,7 @@ export default class Dashboard extends Component {
     this.getIndeedData()
   }
   
+  // get column names and render configs for indeed table 
   getIndeedTableColumns = () => {
     return [
       {
@@ -38,7 +37,6 @@ export default class Dashboard extends Component {
         key: 'title',
         width: '20%',
         ...this.getColumnSearchProps('title'),
-
         render: (text, record) => (
           <a href={record.link}>{text}</a>
         )
@@ -79,15 +77,18 @@ export default class Dashboard extends Component {
   
   getIndeedData = () => {
     this.setState({isLoading: true})
+    // fetch job posting data from backend
     getIndeedJobs()
       .then(res => {
         // prevent setState on unmounted component
         if (!this.updater.isMounted(this)) return 
 
         res = JSON.parse(res)
+        // filter skills on search input 
         res = this.filterData(this.state.searchword, res)
-        
+        // calculate word frequencies of DS skills 
         this.countSkills(skills, res.map(item => item.description))
+        // render indeed table 
         this.setState({
           indeedData: res.map(item => {
             return {
@@ -110,15 +111,15 @@ export default class Dashboard extends Component {
       })
   }
 
+  // handle search bar in indeed table 
   onSearch = value => {
     this.setState({
-      searchword: value,
-      courseSortMethod: 'skill_demand'
+      searchword: value
     })
-
     this.getIndeedData()
   };
 
+  // filter job list on search input 
   filterData = (keyword, data) => {
     if (keyword === '') {
       return data
@@ -129,7 +130,8 @@ export default class Dashboard extends Component {
       })
     }
   }
- 
+  
+  // calculate word frequencies
   countSkills = (skills, data) => {
     var counts = {}
     data.forEach(item => {
@@ -157,6 +159,7 @@ export default class Dashboard extends Component {
     return sortedCount
   }
 
+  // render desired skills chart 
   drawSkillChart = () => {
     var chartData = this.state.skillCount
     // display top 20 skills 
@@ -170,15 +173,16 @@ export default class Dashboard extends Component {
     this.getCourseraData()
   }
 
+ 
   getCourseraData = () => {
     this.setState({isLoading: true})
+    // fetch coursera data from backend 
     getCourseraCourses()
       .then(res => {
         // prevent setState on unmounted component
         if (!this.updater.isMounted(this)) return 
         res = JSON.parse(res)
         const courses = this.matchSkills(res)
-        // console.log(courses)
         this.setState({
           courseraData: courses.map(item => {
             return {
@@ -206,30 +210,26 @@ export default class Dashboard extends Component {
         render: (text, record) => (
           <img width='100'src={record.photo}></img>
         )
-      },
-      {
+      },{
         title: 'Course',
         dataIndex: 'name',
         key: 'course',
         render: (text, record) => (
           <a href={record.link}>{text}</a>
         )
-      },
-      {
+      },{
         title: 'Offer By',
         dataIndex: 'offerBy',
         key: 'offerBy',
-      },
-      {
+      },{
         title: 'Difficulty',
         dataIndex: 'difficulty',
         key: 'difficulty',
-      }, 
-      {
+      },{
         title: 'Matched SKill',
         dataIndex: 'matchedSkill',
         key: 'matchedSkill',
-      }, 
+      },
     ]
   }
 
@@ -243,14 +243,11 @@ export default class Dashboard extends Component {
       console.log(skill)
       var courses = data.filter((course) => 
         course.name.toLowerCase().includes(skill) 
-        // && course.difficulty.toLowerCase().includes('intermediate')
-        // || course.skills.toLowerCase().includes(skill) 
       )
-    //  // sort courses by rating
-    //   courses = courses.sort(function(a,b) {
-    //     return a.review - b.reviews
-    // })
-
+     // sort popular course by number of reviews
+      courses = courses.sort(function(a,b) {
+        return a.review - b.reviews
+    })
       // filter duplicated courses
       for (var i = 0; i < courses.length; i++) {
         if (courses[i] && !result.some(course => course.name === courses[i].name)) {
@@ -261,24 +258,10 @@ export default class Dashboard extends Component {
     })
     result = result.reverse()
 
-    // handle display order, default at sort by skill demand 
-    if (this.state.courseSortMethod === 'learning_curve') {
-      // sort courses on learning curve
-      result = result.sort(function(a,b) {
-        return learningCurve.indexOf( a.matchedSkill ) - learningCurve.indexOf( b.matchedSkill );
-      })
-    }
-
     return result
   }
 
-  // handle button click on coursera table display order 
-  handleCourseSortMethod = e => {
-    this.setState({ courseSortMethod: e.target.value });
-    this.getCourseraData()
-  }
-
-
+  // handle individual search in table 
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -330,7 +313,6 @@ export default class Dashboard extends Component {
         text
       ),
   });
-
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -338,7 +320,6 @@ export default class Dashboard extends Component {
       searchedColumn: dataIndex,
     });
   };
-
   handleReset = clearFilters => {
     clearFilters();
     this.setState({ searchText: '' });
@@ -365,15 +346,11 @@ export default class Dashboard extends Component {
             loading={this.state.isLoading}
             columns={this.state.indeedColumns} 
             dataSource={this.state.indeedData} 
-            // size='small'
             // scroll={{ y: 400 }}
             pagination={{
               pageSize: 20,
-              onChange: this.onPageChange,
               hideOnSinglePage: true,
-              // total: this.state.total,
               showQuickJumper: true,
-              showSizeChanger: false
             }}
           />
         </Card> 
@@ -386,15 +363,6 @@ export default class Dashboard extends Component {
 
 
             <Card title="Coursera Course Recommendation" 
-              // extra={
-              //   <div>
-              //     <span>order by: </span>
-              //     <Radio.Group value={this.state.courseSortMethod} onChange={this.handleCourseSortMethod}>
-              //       <Radio.Button value="skill_demand">skill demand</Radio.Button>
-              //       <Radio.Button value="learning_curve">learning curve</Radio.Button>
-              //     </Radio.Group>
-              //   </div>
-              // } 
               bordered={false} style={{marginTop: '16px'}}>
               <Table 
               loading={this.state.isLoading}
