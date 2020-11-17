@@ -2,7 +2,7 @@ import axios from 'axios'
 import { message } from 'antd'
 
 // const isDev = process.env.NODE_ENV === 'development'
-const isDev = false
+const isDev = true
 
 const request = axios.create({
   baseURL: isDev? 'http://localhost:8080' : 'https://ds-course-recommender.herokuapp.com',

@@ -57,8 +57,6 @@ export const chartOption = {
   ]
 };
 
-
-
 export const skills = {
   'Python': ['python', 'programming', 'scripting'],
   ' R ': [' R ' ], 
@@ -66,16 +64,15 @@ export const skills = {
   'Scala': ['Scala'],
   'C/C++': ['C++'],  
   'MATLAB': ['MATLAB'],
-  'Excel': ['Excel'],
+  'Excel': ['Excel', 'VBA'],
   'SAS': ['SAS'],
   'SQL': ['SQL'],
   'Oracle':['Oracle'],
   'SPSS': ['SPSS'],
-  'Machine Learning': ['Machine Learning', 'ML', 'Deep Learning','Neural Network', 'Neural Networks', 'Artificial Intelligence', 'AI'],
+  'Machine Learning': ['Machine Learning', 'ML', 'Deep Learning','Neural Network', 'Neural Networks', 'Artificial Intelligence', 'AI', 'ANN', 'MLP', 'CNN', 'LSTM', 'DNN'],
   'Data Science': ['Data Science'],
   'Data Mining': ['Data Mining'],
   'NLP': ['Natural Language Processing', 'NLP'],
-  'Data Visualization': ['Visualization'],
   'Tableau': ['Tableau'], 
   'Power BI': ['Power BI'],
   'Big Data': ['Big Data', 'Spark', 'kafka', 'Hive','beam', 'Hadoop', 'MapReduce', 'Hbase',
@@ -83,7 +80,7 @@ export const skills = {
   'cloud': ['cloud', 'AWS', 'GCP', 'Azure', 'cloud computing'],
   'AWS': ['AWS', 'Amazon Web Services'],
   'Azure': ['Azure'],
-  'Google Cloud': ['Google Cloud', 'GCP'],
+  'GCP': ['Google Cloud', 'GCP'],
   'Probability': ['probablity'],
   'regression': ['regression'],
   'clustering': ['clustering'],
@@ -92,28 +89,27 @@ export const skills = {
   'pandas': ['pandas'],
   'Tensorflow': ['Tensorflow', 'Keras'],
   'Pytorch': ['Pytorch'],
-  'Computer Vision': ['computer vision'],
+  'Computer Vision': ['computer vision', 'opencv'],
   'Hadoop': ['Hadoop'],
   'Spark': ['Spark'],
   'ETL': ['ETL'],
   'Statistics' :  ['Statistic', 'statistical'],
   'DevOps': ['DevOps', 'automation', 'QA'],
   'Git':['GitHub', 'Git', 'version control', 'CI/CD'],
+  'Linux': ['Linux', 'Unix'],
   'agile' : ['agile'],
   'SDLC' : ['SDLC', 'sdlc', ]
 }
 
-export const learningCurve = ['python', 'data science', 'statistics', 'machine learning', 'sql', 'cloud', 'aws', 'google cloud', 'big data', 'excel', 'tableau', 'tensorflow']
-
+export const learningCurve = ['python', 'data science', 'statistics', 'machine learning', 'sql','big data', 'cloud', 'aws', 'gcp', 'excel', 'tableau', 'tensorflow']
 
 export const categories = {
   'Programming Languages': ['Python', 'R', 'Java', 'C/C++', 'MATLAB', 'Scala'],
-  'Databases': ['SQL/databases', 'Oracle'],
+  'Databases': ['SQL', 'Oracle'],
   'Machine Learning': ['Machine Learning', 'NLP', 'regression', 'clustering', 'Sklearn', 'numpy', 'pandas'],
   'Deep Learning': ['Tensorflow', 'Pytorch', 'Keras', 'Computer Vision'],
   'Big Data': ['Big Data'],
   'Data Analytics & Visualization': ['Data Visualization', 'Tableau', 'Power BI', 'Data Mining/Analytics', 'Excel'],
-  'Cloud': ['cloud', 'AWS', 'Azure', 'Google Cloud'],
+  'Cloud': ['cloud', 'AWS', 'Azure', 'GCP'],
   'Others': ['Algebra', 'Mathematics','Statistics', 'DevOps', 'QA', 'version control', 'agile', 'SDLC','SAS', 'SPSS', 'Probability']
 }
-

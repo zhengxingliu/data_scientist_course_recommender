@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Button, Table, Row, Col, Input, Space, Tooltip } from 'antd'
+import { Card, Button, Table, Row, Col, Input, Space, Tooltip, Radio} from 'antd'
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import echarts from 'echarts'
@@ -20,74 +20,16 @@ export default class Dashboard extends Component {
       searchword: '',
       searchText: '',
       searchedColumn: '',
+      courseSortMethod: 'skill_demand'
 
     }
   }
-  getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
-    render: text =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
-  });
 
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
-
-  handleReset = clearFilters => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
-
+  componentDidMount() {
+    this.chart = echarts.init(document.getElementById('chart'))
+    this.getIndeedData()
+  }
+  
   getIndeedTableColumns = () => {
     return [
       {
@@ -170,8 +112,10 @@ export default class Dashboard extends Component {
 
   onSearch = value => {
     this.setState({
-      searchword: value
+      searchword: value,
+      courseSortMethod: 'skill_demand'
     })
+
     this.getIndeedData()
   };
 
@@ -234,7 +178,7 @@ export default class Dashboard extends Component {
         if (!this.updater.isMounted(this)) return 
         res = JSON.parse(res)
         const courses = this.matchSkills(res)
-        console.log(courses)
+        // console.log(courses)
         this.setState({
           courseraData: courses.map(item => {
             return {
@@ -296,11 +240,17 @@ export default class Dashboard extends Component {
     // find best matched courses to topSkills
     topSkills.forEach(skill => {
       skill = skill[0].toLowerCase()
+      console.log(skill)
       var courses = data.filter((course) => 
         course.name.toLowerCase().includes(skill) 
-        //&& course.difficulty.toLowerCase().includes('intermediate')
-        // || course.name.toLowerCase().includes(skill) 
+        // && course.difficulty.toLowerCase().includes('intermediate')
+        // || course.skills.toLowerCase().includes(skill) 
       )
+    //  // sort courses by rating
+    //   courses = courses.sort(function(a,b) {
+    //     return a.review - b.reviews
+    // })
+
       // filter duplicated courses
       for (var i = 0; i < courses.length; i++) {
         if (courses[i] && !result.some(course => course.name === courses[i].name)) {
@@ -310,19 +260,90 @@ export default class Dashboard extends Component {
       }
     })
     result = result.reverse()
-  //   // sort courses on learning curve
-  //   result = result.sort(function(a,b) {
-  //     return learningCurve.indexOf( a.matchedSkill ) - learningCurve.indexOf( b.matchedSkill );
-  // });
+
+    // handle display order, default at sort by skill demand 
+    if (this.state.courseSortMethod === 'learning_curve') {
+      // sort courses on learning curve
+      result = result.sort(function(a,b) {
+        return learningCurve.indexOf( a.matchedSkill ) - learningCurve.indexOf( b.matchedSkill );
+      })
+    }
+
     return result
-    
+  }
+
+  // handle button click on coursera table display order 
+  handleCourseSortMethod = e => {
+    this.setState({ courseSortMethod: e.target.value });
+    this.getCourseraData()
   }
 
 
-  componentDidMount() {
-    this.chart = echarts.init(document.getElementById('chart'))
-    this.getIndeedData()
-  }
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
 
   render() {
     return (
@@ -364,7 +385,17 @@ export default class Dashboard extends Component {
             </Card>
 
 
-            <Card title="Coursera Course Recommendation" bordered={false} style={{marginTop: '16px'}}>
+            <Card title="Coursera Course Recommendation" 
+              extra={
+                <div>
+                  <span>order by: </span>
+                  <Radio.Group value={this.state.courseSortMethod} onChange={this.handleCourseSortMethod}>
+                    <Radio.Button value="skill_demand">skill demand</Radio.Button>
+                    <Radio.Button value="learning_curve">learning curve</Radio.Button>
+                  </Radio.Group>
+                </div>
+              } 
+              bordered={false} style={{marginTop: '16px'}}>
               <Table 
               loading={this.state.isLoading}
               columns={this.state.courseraColumns} 
