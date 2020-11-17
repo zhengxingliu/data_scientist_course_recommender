@@ -101,7 +101,11 @@ export const skills = {
   'SDLC' : ['SDLC', 'sdlc', ]
 }
 
-export const learningCurve = ['python', 'data science', 'statistics', 'machine learning', 'sql','big data', 'cloud', 'aws', 'gcp', 'excel', 'tableau', 'tensorflow']
+export const learningProgress = ['python', 'data science', 'machine learning','statistics', 'sql','big data' , 'spark', 'hadoop', 'tensorflow', 'pytorch', 'cloud', 'aws', 'gcp', 'azure',
+                              'excel', 'tableau', , 'git', 'devops', 'java']
+
+export const difficulties = ['Beginner', 'Intermediate', 'Mixed', 'Advanced']
+
 
 export const categories = {
   'Programming Languages': ['Python', 'R', 'Java', 'C/C++', 'MATLAB', 'Scala'],

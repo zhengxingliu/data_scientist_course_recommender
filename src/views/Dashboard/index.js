@@ -6,7 +6,7 @@ import echarts from 'echarts'
 
 import './index.css';
 import { getIndeedJobs, getCourseraCourses } from '../../requests'
-import {chartOption, gridSpan, skills,learningCurve} from './settings'
+import {chartOption, gridSpan, skills, learningProgress} from './settings'
 
 const { Search } = Input
 
@@ -204,7 +204,7 @@ export default class Dashboard extends Component {
         dataIndex: 'photo',
         key: 'photo',
         render: (text, record) => (
-          <img width='100'src={record.photo}></img>
+          <img width='100'src={record.photo} alt='course cover'></img>
         )
       },
       {
@@ -240,16 +240,21 @@ export default class Dashboard extends Component {
     // find best matched courses to topSkills
     topSkills.forEach(skill => {
       skill = skill[0].toLowerCase()
-      console.log(skill)
       var courses = data.filter((course) => 
         course.name.toLowerCase().includes(skill) 
         // && course.difficulty.toLowerCase().includes('intermediate')
         // || course.skills.toLowerCase().includes(skill) 
       )
-    //  // sort courses by rating
-    //   courses = courses.sort(function(a,b) {
-    //     return a.review - b.reviews
-    // })
+     // sort courses by rating
+      courses = courses.sort(function(a,b) {
+        return a.review - b.reviews
+    })
+
+ 
+     // sort courses by rating
+      courses = courses.sort(function(a,b) {
+        return a.review - b.reviews
+    })
 
       // filter duplicated courses
       for (var i = 0; i < courses.length; i++) {
@@ -260,14 +265,15 @@ export default class Dashboard extends Component {
       }
     })
     result = result.reverse()
-
+   
     // handle display order, default at sort by skill demand 
-    if (this.state.courseSortMethod === 'learning_curve') {
+    if (this.state.courseSortMethod === 'learning_progress') {
       // sort courses on learning curve
       result = result.sort(function(a,b) {
-        return learningCurve.indexOf( a.matchedSkill ) - learningCurve.indexOf( b.matchedSkill );
+        return learningProgress.indexOf( a.matchedSkill ) - learningProgress.indexOf( b.matchedSkill );
       })
     }
+
 
     return result
   }
@@ -391,7 +397,7 @@ export default class Dashboard extends Component {
                   <span>order by: </span>
                   <Radio.Group value={this.state.courseSortMethod} onChange={this.handleCourseSortMethod}>
                     <Radio.Button value="skill_demand">skill demand</Radio.Button>
-                    <Radio.Button value="learning_curve">learning curve</Radio.Button>
+                    <Radio.Button value="learning_progress">learning progress</Radio.Button>
                   </Radio.Group>
                 </div>
               } 
